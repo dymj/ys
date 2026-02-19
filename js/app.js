@@ -11,18 +11,6 @@ let currentVideoTitle = '';
 // 全局变量用于倒序状态
 let episodesReversed = false;
 
-// 添加代理转换函数
-function getProxiedImageUrl(url) {
-    if (!url) return '';
-    // 判断如果图片链接中包含豆瓣域名，则加上百度图片代理
-    if (url.includes('doubanio.com') || url.includes('douban.com')) {
-        // 使用 encodeURIComponent 确保原链接的特殊字符不被破坏
-        return 'https://image.baidu.com/search/down?url=' + encodeURIComponent(url);
-    }
-    // 非豆瓣图片直接返回原链接
-    return url;
-}
-
 // 页面初始化
 document.addEventListener('DOMContentLoaded', function () {
     // 初始化API复选框
@@ -764,7 +752,7 @@ async function search() {
                     <div class="flex h-full">
                         ${hasCover ? `
                         <div class="relative flex-shrink-0 search-card-img-container">
-                            <img src="${getProxiedImageUrl(item.vod_pic)}" alt="${safeName}" 
+                            <img src="${item.vod_pic}" alt="${safeName}" 
                                  class="h-full w-full object-cover transition-transform hover:scale-110" 
                                  onerror="this.onerror=null; this.src='https://via.placeholder.com/300x450?text=无封面'; this.classList.add('object-contain');" 
                                  loading="lazy">
