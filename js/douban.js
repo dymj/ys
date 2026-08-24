@@ -531,16 +531,17 @@ function renderDoubanCards(data, container) {
             // 处理图片URL
             const originalCoverUrl = item.cover;
             
-            // 1. 首选：使用百度图片代理绕过豆瓣防盗链
-            const baiduProxyUrl = `https://image.baidu.com/search/down?url=${originalCoverUrl}`;
+            // 1. 首选：使用 wsrv.nl 图片代理
+            // 注意：这里最好加上 encodeURIComponent 确保 URL 编码正确
+            const publicProxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(originalCoverUrl)}`;
             
-            // 2. 备选：保留系统原有的 PROXY_URL 作为最后的 fallback
+            // 2. 备选：保留系统原有的 PROXY_URL 
             const proxiedCoverUrl = typeof PROXY_URL !== 'undefined' ? PROXY_URL + encodeURIComponent(originalCoverUrl) : originalCoverUrl;
             
             // 为不同设备优化卡片布局
             card.innerHTML = `
                 <div class="relative w-full aspect-[2/3] overflow-hidden cursor-pointer" onclick="fillAndSearchWithDouban('${safeTitle}')">
-                    <img src="${baiduProxyUrl}" alt="${safeTitle}" 
+                    <img src="${publicProxyUrl}" alt="${safeTitle}" 
                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                         onerror="this.onerror=null; this.src='${proxiedCoverUrl}'; this.classList.add('object-contain');"
                         loading="lazy" referrerpolicy="no-referrer">
